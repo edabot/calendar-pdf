@@ -30,6 +30,17 @@
 #divToPDF {
   width: 750px;
   font-size: 2em;
-  background-color: lightgray;
   color: red;
+}
+
+.week {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.day {
+  width: 14.2%;
+  height: 150px;
+  border: 1px solid lightgray;
 }

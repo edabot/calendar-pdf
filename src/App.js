@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import pdfConverter from 'jspdf';
 import html2canvas from 'html2canvas';
 import moment from 'moment';
@@ -17,7 +16,7 @@ class App extends Component {
   }
 
   printPdf() {
-    html2canvas(window.document.getElementById('divToPDF')).then(function(canvas) {
+    html2canvas(window.document.getElementById('divToPDF'), {scale: 1}).then(function(canvas) {
       var img=canvas.toDataURL("image/png");
       var doc = new pdfConverter('p', 'px', 'letter');
       doc.addImage(img,'JPEG',20,20);
@@ -25,16 +24,34 @@ class App extends Component {
     })
   }
 
+  addDay() {
+    let newStartDate = moment(this.state.startDate).add(1, 'days')
+    this.setState({
+      startDate: newStartDate,
+      weekCount: newStartDate.format('dddd') === "Sunday" ? 6 : 5
+    })
+    console.log(newStartDate.format('dddd'))
+  }
+
+  subtractDay() {
+    let newStartDate = moment(this.state.startDate).subtract(1, 'days')
+    this.setState({
+      startDate: newStartDate,
+      weekCount: newStartDate.format('dddd') === "Sunday" ? 6 : 5
+    })
+    console.log(newStartDate.format('dddd'))
+  }
+
   render() {
+    console.log(this.state.startDate)
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
+        <div onClick={this.addDay.bind(this)}>+1 day</div>
+        <div onClick={this.subtractDay.bind(this)}>-1 day</div>
+
         <div id="divToPDF">
+          hi
           <Calendar startDate={this.state.startDate} weekCount={this.state.weekCount}/>
-          {this.state.weekCount}
         </div>
         <div onClick={this.printPdf}>print</div>
       </div>

@@ -10,10 +10,10 @@ const makeWeekArray = (startDate) => {
 }
 
 const makeWeeksArray = (startDate, weekCount) => {
-  let calStartDate = startDate.startOf('week');
+  let calStartDate = moment(startDate).startOf('week');
   let weeksArray = []
   for (let i = 0; i < weekCount; i++ ) {
-    weeksArray.push(makeWeekArray(calStartDate.add(i, 'weeks')))
+    weeksArray.push(makeWeekArray(calStartDate.add(1, 'weeks')))
   }
   return weeksArray
 }
@@ -21,7 +21,7 @@ const makeWeeksArray = (startDate, weekCount) => {
 class Day extends Component {
   render() {
     return (
-      <div>
+      <div className="day">
         {this.props.day.format("M/D")}
       </div>
     )
@@ -32,7 +32,7 @@ class Day extends Component {
 class Week extends Component {
   render() {
     return (
-      <div>
+      <div className="week">
         {this.props.week.map(day => <Day day={day} key={day.format("DDD")}/>)}
       </div>
     )
@@ -48,8 +48,11 @@ class Calendar extends Component {
     }
   }
 
+  componentWillReceiveProps(newProps) {
+    this.setState({ weekArray: makeWeeksArray(newProps.startDate, newProps.weekCount) })
+  }
+
   render() {
-    console.log(this.state.weekArray)
     return (
       <div className="calendar">
         {this.state.weekArray.map(week => <Week week={week} key={week[0].format("DDDo")}/>)}
