@@ -11,7 +11,9 @@ class App extends Component {
     super(props)
     this.state = {
       startDate: moment(),
-      weekCount: moment().format('dddd') === "Sunday" ? 6 : 5
+      endDate: moment().add(29, 'days'),
+      weekCount: moment().format('dddd') === "Sunday" ? 6 : 5,
+      goal: ""
     }
   }
 
@@ -26,34 +28,46 @@ class App extends Component {
 
   addDay() {
     let newStartDate = moment(this.state.startDate).add(1, 'days')
-    this.setState({
-      startDate: newStartDate,
-      weekCount: newStartDate.format('dddd') === "Sunday" ? 6 : 5
-    })
-    console.log(newStartDate.format('dddd'))
+    this.updateState(newStartDate)
   }
 
   subtractDay() {
     let newStartDate = moment(this.state.startDate).subtract(1, 'days')
+    this.updateState(newStartDate)
+  }
+
+  updateState(newStartDate) {
     this.setState({
       startDate: newStartDate,
-      weekCount: newStartDate.format('dddd') === "Sunday" ? 6 : 5
+      endDate: moment(newStartDate).add(29, 'days'),
+      weekCount: newStartDate.format('dddd') === "Saturday" ? 6 : 5
     })
-    console.log(newStartDate.format('dddd'))
+  }
+
+  updateGoal(event) {
+    this.setState({ goal: event.target.value })
   }
 
   render() {
-    console.log(this.state.startDate)
     return (
       <div className="App">
-        <div onClick={this.addDay.bind(this)}>+1 day</div>
-        <div onClick={this.subtractDay.bind(this)}>-1 day</div>
-
-        <div id="divToPDF">
-          hi
-          <Calendar startDate={this.state.startDate} weekCount={this.state.weekCount}/>
+        <div className="buttons">
+          <div className="print-button" onClick={this.printPdf}>print</div>
+          <div className="shift-button" onClick={this.subtractDay.bind(this)}>-1 day</div>
+          <div className="shift-button" onClick={this.addDay.bind(this)}>+1 day</div>
         </div>
-        <div onClick={this.printPdf}>print</div>
+        <div className="goal-entry">
+          My goal is to <input onChange={this.updateGoal.bind(this)} value={this.state.goal} /> for 30 days
+        </div>
+        <div className="pdf-container">
+          <div id="divToPDF">
+            <div className="goal">30 Day Goal: {this.state.goal}</div>
+            <Calendar
+              startDate={this.state.startDate}
+              endDate={this.state.endDate}
+              weekCount={this.state.weekCount}/>
+          </div>
+        </div>
       </div>
     );
   }

@@ -1,46 +1,73 @@
+#divToPDF {
+  width: 750px;
+  font-size: 1.5em;
+  margin: 0 auto;
+  text-align: center;
+}
+
+
 .App {
   text-align: center;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
-}
-
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
-}
-
-.App-title {
-  font-size: 1.5em;
-}
-
-.App-intro {
-  font-size: large;
-}
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-#divToPDF {
-  width: 750px;
-  font-size: 2em;
-  color: red;
-}
-
-.week {
+.buttons {
   display: flex;
-  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.print-button {
+  color: white;
+  background-color: lightgreen;
+  padding: 5px 10px;
+  border-radius: 10px;
+  margin-right: 20px;
+}
+
+.shift-button {
+  padding: 5px 10px;
+  color: white;
+  border-radius: 10px;
+  background-color: blue;
+  margin-right: 10px;
+}
+
+.pdf-container {
+  border: 1px solid lightgray;
+  width: 800px;
+  margin: 0 auto;
+  padding: 10px;
+}
+
+.goal-entry {
+  margin-bottom: 1em;
+}
+
+.goal {
+  font-size: 1.5em;
+  margin-bottom: 1em;
+  padding: 10px;
+}
+
+.calendar {
+  display: flex;
+  flex-wrap: wrap;
   width: 100%;
 }
 
 .day {
   width: 14.2%;
-  height: 150px;
+  padding: 5px;
+  height: 120px;
   border: 1px solid lightgray;
+  text-align: center;
+}
+
+.date {
+  font-size: .8em;
+}
+
+.counter {
+  margin-top: 1em;
+  color: #333;
 }

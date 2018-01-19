@@ -1,39 +1,29 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 
-const makeWeekArray = (startDate) => {
-  let weekArray = []
-  for (let i = 0; i < 7; i++ ) {
-    weekArray.push(moment(startDate).add(i, 'days'))
-  }
-  return weekArray
-}
-
-const makeWeeksArray = (startDate, weekCount) => {
+const makeDayArray = (startDate, endDate, weekCount) => {
   let calStartDate = moment(startDate).startOf('week');
-  let weeksArray = []
-  for (let i = 0; i < weekCount; i++ ) {
-    weeksArray.push(makeWeekArray(calStartDate.add(1, 'weeks')))
+  let dayArray = []
+  let counter = calStartDate.diff(startDate, 'days')
+  for (let i = 0; i < weekCount * 7; i++ ) {
+    let date = moment(calStartDate).add(i, 'days').format("M/D")
+    counter++
+    dayArray.push({ date: date, counter: counter })
   }
-  return weeksArray
+  return dayArray
 }
 
 class Day extends Component {
+
   render() {
     return (
       <div className="day">
-        {this.props.day.format("M/D")}
-      </div>
-    )
-  }
-}
-
-
-class Week extends Component {
-  render() {
-    return (
-      <div className="week">
-        {this.props.week.map(day => <Day day={day} key={day.format("DDD")}/>)}
+        <div className="date">
+          {this.props.day.date}
+        </div>
+        <div className="counter">
+          {this.props.day.counter > 30 || this.props.day.counter < 1 ? "" : this.props.day.counter }
+        </div>
       </div>
     )
   }
@@ -44,18 +34,18 @@ class Calendar extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      weekArray: makeWeeksArray(this.props.startDate, this.props.weekCount)
+      dayArray: makeDayArray(this.props.startDate, this.props.endDate, this.props.weekCount)
     }
   }
 
   componentWillReceiveProps(newProps) {
-    this.setState({ weekArray: makeWeeksArray(newProps.startDate, newProps.weekCount) })
+    this.setState({ dayArray: makeDayArray(newProps.startDate, newProps.endDate, newProps.weekCount) })
   }
 
   render() {
     return (
       <div className="calendar">
-        {this.state.weekArray.map(week => <Week week={week} key={week[0].format("DDDo")}/>)}
+        {this.state.dayArray.map(day => <Day day={day} key={day.date}/>)}
       </div>
     )
 
